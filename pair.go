@@ -2,6 +2,7 @@ package foxswap
 
 import (
 	"context"
+
 	"github.com/shopspring/decimal"
 )
 
@@ -22,20 +23,20 @@ func (pair *Pair) reverse() {
 }
 
 // ReadPairs list all pairs
-func ListPairs(token string) ([]*Pair, error) {
+func ListPairs(token string) (pairs []*Pair, timestampMs int64, err error) {
 	const uri = "/api/pairs"
 	resp, err := Request(context.Background()).SetHeader("Authorization", "Bearer "+token).Get(uri)
 	if err != nil {
-		return nil, err
+		return nil, timestampMs, err
 	}
 
 	var body struct {
 		Pairs []*Pair `json:"pairs,omitempty"`
 	}
 
-	if err := UnmarshalResponse(resp, &body); err != nil {
-		return nil, err
+	if timestampMs, err = UnmarshalResponse(resp, &body); err != nil {
+		return nil, timestampMs, err
 	}
 
-	return body.Pairs, nil
+	return body.Pairs, timestampMs, nil
 }
