@@ -23,7 +23,7 @@ func (pair *Pair) reverse() {
 }
 
 // ReadPairs list all pairs
-func ListPairs(token string) (pairs []*Pair, timestampMs int64, err error) {
+func ReadPairs(token string) (pairs []*Pair, timestampMs int64, err error) {
 	const uri = "/api/pairs"
 	resp, err := Request(context.Background()).SetHeader("Authorization", "Bearer "+token).Get(uri)
 	if err != nil {
