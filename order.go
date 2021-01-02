@@ -2,8 +2,9 @@ package foxswap
 
 import (
 	"context"
-	"github.com/shopspring/decimal"
 	"time"
+
+	"github.com/shopspring/decimal"
 )
 
 const (
@@ -44,7 +45,7 @@ func ReadOrder(token, traceId string) (*Order, error) {
 	}
 
 	var order Order
-	if err := UnmarshalResponse(resp, &order); err != nil {
+	if _, err := UnmarshalResponse(resp, &order); err != nil {
 		return nil, err
 	}
 
