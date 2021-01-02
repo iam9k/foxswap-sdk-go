@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	Endpoint = "https://f1-uniswap-api.firesbox.com"
+	Endpoint = "https://f1-mtgswap-api.firesbox.com"
 )
 
 type Error struct {
