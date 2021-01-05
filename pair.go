@@ -15,6 +15,8 @@ type Pair struct {
 	RouteID      int64           `json:"route_id,omitempty"`
 	Liquidity    decimal.Decimal `json:"liquidity,omitempty"`
 	Share        decimal.Decimal `json:"share,omitempty"`
+	SwapMethod   string          `json:"swap_method,omitempty"`
+	Version      int64           `json:"version,omitempty"`
 }
 
 func (pair *Pair) reverse() {
