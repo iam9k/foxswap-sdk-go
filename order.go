@@ -45,7 +45,7 @@ func ReadOrder(token, traceId string) (*Order, error) {
 	}
 
 	var order Order
-	if _, err := UnmarshalResponse(resp, &order); err != nil {
+	if err = UnmarshalResponse(resp, &order); err != nil {
 		return nil, err
 	}
 

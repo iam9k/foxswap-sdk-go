@@ -35,40 +35,40 @@ func Request(ctx context.Context) *resty.Request {
 	return httpClient.R().SetContext(ctx)
 }
 
-func DecodeResponse(resp *resty.Response) ([]byte, int64, error) {
+func DecodeResponse(resp *resty.Response) ([]byte, error) {
 	var body struct {
 		Error
-		Data        json.RawMessage `json:"data,omitempty"`
-		timestampMs int64           `json:"ts,omitempty"`
+		Data json.RawMessage `json:"data,omitempty"`
+		Ts   int64           `json:"ts,omitempty"`
 	}
 
 	if err := json.Unmarshal(resp.Body(), &body); err != nil {
 		if resp.IsError() {
-			return nil, 0, &Error{
+			return nil, &Error{
 				Code: resp.StatusCode(),
 				Msg:  resp.Status(),
 			}
 		}
 
-		return nil, 0, err
+		return nil, err
 	}
 
 	if body.Error.Code > 0 {
-		return nil, 0, &body.Error
+		return nil, &body.Error
 	}
 
-	return body.Data, body.timestampMs, nil
+	return body.Data, nil
 }
 
-func UnmarshalResponse(resp *resty.Response, v interface{}) (timestampMs int64, err error) {
-	data, timestampMs, err := DecodeResponse(resp)
+func UnmarshalResponse(resp *resty.Response, v interface{}) error {
+	data, err := DecodeResponse(resp)
 	if err != nil {
-		return timestampMs, err
+		return err
 	}
 
 	if v != nil {
-		return timestampMs, json.Unmarshal(data, v)
+		return json.Unmarshal(data, v)
 	}
 
-	return timestampMs, nil
+	return nil
 }
